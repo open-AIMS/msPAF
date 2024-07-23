@@ -39,7 +39,7 @@ To install the latest development version of `msPAF` from [GitHub](https://githu
 if (!requireNamespace("remotes")) {
   install.packages("remotes")
 }
-remotes::install_github("open-aims/msPAF", ref = "dev")
+remotes::install_github("open-aims/msPAF", ref = "main")
 ```
 
 ## Introduction
