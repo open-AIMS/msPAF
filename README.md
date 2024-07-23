@@ -3,8 +3,9 @@
 
 # msPAF with ssdtools <img src="man/figures/logo.png" align="right" />
 
-`msPAF` ssdtools\` is an R package to obtained additive toxicity
-estimates based on 2 or more Species Sensitivity Distributions (SSD).
+`msPAF` is an R package to obtained additive toxicity estimates based on
+2 or more Species Sensitivity Distributions (SSD) obtained via
+`ssdtools`.
 
 SSDs are cumulative probability distributions which are fitted to
 toxicity concentrations for different species as described by Posthuma
@@ -12,6 +13,10 @@ et al. (2001). The current versions of msPAF takes SSDs fitted via the
 `ssdtools` package, which uses Maximum Likelihood to fit distributions
 such as the gamma, log-logistic, log-normal and Weibull to censored
 and/or weighted data.
+
+Joint toxicity of 2 or more contaminants and/or stressors are obtained
+following the methods described in Negri, et al. 2019 (Environmental
+Science and Technology, 54(2), pp.1102-1110).
 
 ## Installation
 
@@ -29,7 +34,7 @@ To install the latest development version of `msPAF` from
 if (!requireNamespace("remotes")) {
   install.packages("remotes")
 }
-remotes::install_github("open-aims/msPAF", ref = "dev")
+remotes::install_github("open-aims/msPAF", ref = "main")
 ```
 
 ## Introduction
