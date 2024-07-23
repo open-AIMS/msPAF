@@ -8,6 +8,8 @@
 #' @importFrom ssdtools predict
 #' @importFrom dplyr mutate select
 #' @importFrom modelbased zero_crossings
+#' 
+#' @export
 
 
 additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2), resolution = 100){

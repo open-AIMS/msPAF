@@ -4,6 +4,8 @@
 #' across two or more input ssds, as input via a named list.
 #'
 #' @inheritParams params
+#' 
+#' @export
 
 additive_predict <- function(x, proportion = seq(0.01, 1-0.01, length=100)){
   

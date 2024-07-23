@@ -11,15 +11,11 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-"
 )
 library(tidyverse)
+library(msPAF)
 ```
 
 
 # msPAF with ssdtools <img src="man/figures/logo.png" align="right" />
-
-<!-- badges: start -->
-[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
-[![R-CMD-check](https://github.com/bcgov/ssdtools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bcgov/ssdtools/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end -->
 
 `msPAF` ssdtools` is an R package to obtained additive toxicity estimates based on 2 or more Species Sensitivity Distributions (SSD). 
 
@@ -80,12 +76,12 @@ We can obtain predictions of the additive proportion of species affected across 
 ```{r}
 library(msPAF)
 plot_dat <- additive_predict(fits)
-plot_dat
+head(plot_dat)
 ```
 
 For two contaminants, these can be visualized as a surface.
 
-```{r}
+```{r, eval=FALSE}
 library(plotly)
 z=plot_dat$additive_proportions
 y=plot_dat$boron

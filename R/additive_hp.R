@@ -7,6 +7,8 @@
 #' 
 #' @importFrom ssdtools ssd_hp
 #' @importFrom dplyr mutate select
+#' 
+#' @export
 
 additive_hp <- function(x, conc, ...){
   comp_x <- names(x)
