@@ -20,6 +20,10 @@
 
 # RStudio files
 .Rproj.user/
+*.Rproj
+
+/ignore
+/scratch
 
 # produced vignettes
 vignettes/*.html

@@ -1,0 +1,29 @@
+Package: msPAF
+Title: msPAF via ssdtools
+Version: 1.0.0.0
+Authors@R: c(person("Rebecca", "Fisher", email = "r.fisher@aims.gov.au", role = c("aut", "cre")), person("Andrew","Negri",role="aut"))
+Description: This repository contains code to replicate the methods for adjusting water quality guideline values for additive stressors, as derscribed in Negri, et al. 2019. Adjusting tropical marine water quality guideline values for elevated ocean temperatures. Environmental Science &amp; Technology, 54(2), pp.1102-1110. 
+Depends:
+    R (>= 4.1),
+    ssdtools,
+    ssddata
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.1
+Biarch: true
+Imports:
+    dplyr,
+    tidyr,
+    modelbased,
+    ssdtools
+Suggests:
+    plotly,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+URL: https://open-aims.github.io/msPAF/
+BugReports: https://github.com/open-aims/msPAF/issues
+Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3

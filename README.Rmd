@@ -1,0 +1,126 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+library(tidyverse)
+```
+
+
+# msPAF with ssdtools <img src="man/figures/logo.png" align="right" />
+
+<!-- badges: start -->
+[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
+[![R-CMD-check](https://github.com/bcgov/ssdtools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bcgov/ssdtools/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+`msPAF` ssdtools` is an R package to obtained additive toxicity estimates based on 2 or more Species Sensitivity Distributions (SSD). 
+
+SSDs are cumulative probability distributions which are fitted to toxicity concentrations for different species as described by Posthuma et al. (2001).
+The current versions of msPAF takes SSDs fitted via the `ssdtools` package, which uses Maximum Likelihood to fit distributions such as the gamma, log-logistic, log-normal and Weibull to censored and/or weighted data.
+
+## Installation
+
+To install the latest version of `ssdtools` from [CRAN](https://CRAN.R-project.org/package=ssdtools)
+```{r, eval = FALSE}
+install.packages("ssdtools")
+```
+
+To install the latest development version of `msPAF` from [GitHub](https://github.com/open-AIMS/msPAF)
+
+```{r eval=FALSE}
+if (!requireNamespace("remotes")) {
+  install.packages("remotes")
+}
+remotes::install_github("open-aims/msPAF", ref = "dev")
+```
+
+## Introduction
+
+`ssdtools` accesses examples SSD data from the [ssddata](https://CRAN.R-project.org/package=ssddata) package for a range of chemicals. We will use the Boron and Cadmium datasets here as a two component mixture example.
+
+```{r, message=FALSE}
+library(ssdtools)
+ssddata::ccme_boron
+ssddata::ccme_cadmium
+```
+
+We start by fitting the default `ssdtools` distributions are fit using `ssd_fit_dists()`, to create a named list of `ssdtools` `fitdists` objects for the chemicals for which we want to explore additive toxicity.
+
+```{r}
+fits <- list(boron = ssd_fit_dists(ssddata::ccme_boron), 
+             cadmium = ssd_fit_dists(ssddata::ccme_cadmium))
+             
+```
+
+The resulting fitted distributions can be quickly plotted using `autoplot`
+```{r, warning = FALSE, message = FALSE}
+library(ggplot2)
+library(ggpubr)
+
+theme_set(theme_bw())
+
+plot_list <- lapply(fits, FUN = function(p){
+  autoplot(p) +
+    scale_colour_ssd()  
+})
+
+ggarrange(plotlist = plot_list, common.legend = TRUE, labels = names(plot_list))
+
+```
+We can obtain predictions of the additive proportion of species affected across both chemicals using
+
+```{r}
+library(msPAF)
+plot_dat <- additive_predict(fits)
+plot_dat
+```
+
+For two contaminants, these can be visualized as a surface.
+
+```{r}
+library(plotly)
+z=plot_dat$additive_proportions
+y=plot_dat$boron
+x=plot_dat$cadmium
+dat <- data.frame(z,y,x)
+plot_ly(z = ~xtabs(z ~ x + y), data = dat) |> 
+  add_surface() 
+```  
+
+The model-averaged additive 1, 5, 10 and 20% hazard concentration can be estimated via `additive_hc`. Note that for two contaminants, these form a curve.
+
+```{r}
+hc_vals_out <- additive_hc(fits)
+hc_vals_out
+```
+
+For only two contaminants, these co-dependence curves can easily be visualized.
+
+```{r, eval=FALSE}
+hc_vals_out |> 
+  ggplot(aes(x=boron, y=cadmium, colour = proportion)) +
+  geom_line() +
+  theme_bw()
+```
+The model-averaged additive hazard proportion values can be obtained via `additive_hp` by providing the list of fitted SSDs and a named list of concentrations for each contaminant.
+
+```{r, eval=FALSE}
+hp_vals_out <- additive_hp(fits, 
+                           conc = list(boron = c(1, 5, 10), 
+                                       cadmium = c(0.1, 0.2)))
+hp_vals_out
+```
+
+
+
+```{r, results = "asis", echo = FALSE}
+cat(licensing_md())
+```
