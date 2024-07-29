@@ -7,7 +7,7 @@
 #' 
 #' @export
 
-additive_predict <- function(x, proportion = seq(0.01, 1-0.01, length=100)){
+additive_predict <- function(x, proportion = seq(0.001, 1-0.001, length=100)){
   
   pred_vals <- lapply(x, FUN = function(y){
     pred <- predict(y, proportion = proportion)

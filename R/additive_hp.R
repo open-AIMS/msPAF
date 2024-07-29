@@ -10,7 +10,7 @@
 #' 
 #' @export
 
-additive_hp <- function(x, conc, ...){
+additive_hp <- function(x, conc, ci = FALSE, ...){
   comp_x <- names(x)
   comp_conc <- names(conc)  
   
