@@ -4,7 +4,14 @@
 \alias{additive_hc}
 \title{Calculates the additive proportion of the community effected}
 \usage{
-additive_hc(x, proportion = c(0.01, 0.05, 0.1, 0.2), resolution = 100)
+additive_hc(
+  x,
+  proportion = c(0.01, 0.05, 0.1, 0.2),
+  resolution = 100,
+  diff_error = 1,
+  fixed_prop = NA,
+  fixed_conc = NA
+)
 }
 \arguments{
 \item{x}{A named list of ssd's of class "fitdists" as fitted by
@@ -15,6 +22,15 @@ concentrations for.}
 
 \item{resolution}{The number of values over which to find estimates
 large values will make the estimate more precise but will also be slow to run.}
+
+\item{diff_error}{Percentage error in estimated additive_proportion affected
+considered acceptable as a valid HC estimate}
+
+\item{fixed_prop}{List of fixed proportions, or proportion series to use
+for additive HC estimation}
+
+\item{fixed_conc}{List of concentrations series to use for additive HC
+estimation}
 }
 \description{
 This function calculate the additive proportion of the community effect

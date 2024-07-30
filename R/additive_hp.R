@@ -10,22 +10,27 @@
 #' 
 #' @export
 
-additive_hp <- function(x, conc, ci = FALSE, ...){
+additive_hp <- function(x, fixed_conc, ci = FALSE, ...){
   comp_x <- names(x)
-  comp_conc <- names(conc)  
-  
+
   if(is.null(comp_x)){
     stop("x must be must be a named list")
   }
   
-  if(is.null(comp_x)){
-    stop("conc must be must be a named list")
+  if(is.null(fixed_conc)){
+    stop("fixed_conc must be must be a named list")
   }
   
+  comp_conc <- names(fixed_conc)  
+  
+  if(length(na.omit(match(comp_x, comp_conc))) != length(x)) {
+    stop("fixed_conc must contain values for all elements of x")
+  }
+
   hp_vals <- lapply(1:length(comp_x), FUN = function(y){
     name.y <- comp_x[y]
     fit.y <- x[[name.y]]
-    conc.y <- conc[[name.y]]
+    conc.y <- fixed_conc[[name.y]]
     ssd_hp(fit.y, conc = conc.y) |> 
       mutate(proportion=est/100) |> 
       select(conc, proportion)

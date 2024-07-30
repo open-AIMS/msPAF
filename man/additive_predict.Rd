@@ -4,7 +4,7 @@
 \alias{additive_predict}
 \title{Calculates the additive proportion of the community effected}
 \usage{
-additive_predict(x, proportion = seq(0.01, 1 - 0.01, length = 100))
+additive_predict(x, proportion = seq(0.001, 1 - 0.001, length = 100))
 }
 \arguments{
 \item{x}{A named list of ssd's of class "fitdists" as fitted by

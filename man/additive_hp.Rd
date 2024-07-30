@@ -4,13 +4,14 @@
 \alias{additive_hp}
 \title{Calculates the additive proportion of the community effected}
 \usage{
-additive_hp(x, conc, ...)
+additive_hp(x, fixed_conc, ci = FALSE, ...)
 }
 \arguments{
 \item{x}{A named list of ssd's of class "fitdists" as fitted by
 \code{\link{ssd_fit_dists}} via package \code{\link{ssdtools}}.}
 
-\item{conc}{A names list of numeric vectors of concentrations to calculate the hazard proportions for.}
+\item{fixed_conc}{List of concentrations series to use for additive HC
+estimation}
 }
 \description{
 This function calculate the additive proportion of the community effect
