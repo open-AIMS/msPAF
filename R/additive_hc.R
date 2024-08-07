@@ -19,7 +19,7 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
 
   names_fixed <- union(names_fixedP, names_fixedC)
   names_free <- setdiff(names_all, names_fixed)
-  
+
   if(!is.null(names_fixed)){
     if(length(setdiff(names_fixed, names_all))>0){
       stop("Your fixed names are not present in x")
@@ -27,8 +27,8 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
   }
   
   if(!is.null(names_fixedC)){
-    fixed_prop_add <- lapply(names_fixedC, FUN = function(p){
-      ssd_hp(x[[p]], conc = fixed_conc[[p]])$est
+    fixed_prop_add <- lapply(names_fixedC, FUN = function(k){
+      ssd_hp(x[[k]], conc = fixed_conc[[k]])$est/100
     })
     names(fixed_prop_add) <- names_fixedC 
     
@@ -41,7 +41,6 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
   }
 
   cols <- c(names_all, "additive_proportions")
-
   hc_vals_out <- lapply(proportion, FUN = function(p){ 
     pred_vals <-   lapply(names_all, FUN = function(y){
       y_fit <- x[[y]]

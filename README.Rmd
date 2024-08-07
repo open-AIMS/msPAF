@@ -114,7 +114,7 @@ The model-averaged additive hazard proportion values can be obtained via `additi
 
 ```{r, eval=FALSE}
 hp_vals_out <- additive_hp(fits, 
-                           conc = list(boron = c(1, 5, 10), 
+                           fixed_conc = list(boron = c(1, 5, 10), 
                                        cadmium = c(0.1, 0.2)))
 hp_vals_out
 ```
