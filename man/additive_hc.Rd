@@ -2,7 +2,7 @@
 % Please edit documentation in R/additive_hc.R
 \name{additive_hc}
 \alias{additive_hc}
-\title{Calculates the additive proportion of the community effected}
+\title{Calculates the additive hazard concentration, given a proportion(s) effected.}
 \usage{
 additive_hc(
   x,
@@ -15,24 +15,33 @@ additive_hc(
 }
 \arguments{
 \item{x}{A named list of ssd's of class "fitdists" as fitted by
-\code{\link{ssd_fit_dists}} via package \code{\link{ssdtools}}.}
+\code{\link{ssd_fit_dists}} via package \code{\link{ssdtools}}. Alternatively,
+a named list of concentration-response fits of class "bnecfit" as fitted by
+\code{\link{bnec}} via package \code{\link{bayesnec}}.}
 
 \item{proportion}{A numeric vector of proportion values to estimate hazard
-concentrations for.}
+concentrations for. These are proportion of the community in the case of a
+fitted ssd, or effect proportions relative to the control in the case of a
+concentration-response fitted model.}
 
 \item{resolution}{The number of values over which to find estimates
 large values will make the estimate more precise but will also be slow to run.}
 
 \item{diff_error}{Percentage error in estimated additive_proportion affected
-considered acceptable as a valid HC estimate}
+considered acceptable as a valid HC estimate.}
 
 \item{fixed_prop}{List of fixed proportions, or proportion series to use
-for additive HC estimation}
+for additive HC estimation.}
 
 \item{fixed_conc}{List of concentrations series to use for additive HC
-estimation}
+estimation.}
 }
 \description{
-This function calculate the additive proportion of the community effect
-across two or more input ssds, as input via a named list.
+Calculates the additive hazard concentration, given a proportion(s) effected.
+}
+\details{
+This function calculates the additive hazard concentrations, given a desired
+proportion of the community effected or individual species endpoint effect
+values across two or more input ssds or concentration-response curves,
+as input via a named list.
 }

@@ -1,11 +1,13 @@
-#' Calculates the additive proportion of the community effected
+#' Calculates the additive hazard concentration, given a proportion(s) effected.
 #'
-#' This function calculate the additive proportion of the community effect
-#' across two or more input ssds, as input via a named list.
+#' @details
+#' This function calculates the additive hazard concentrations, given a desired
+#' proportion of the community effected or individual species endpoint effect 
+#' values across two or more input ssds or concentration-response curves, 
+#' as input via a named list.
 #'
 #' @inheritParams params
 #' 
-#' @importFrom ssdtools predict
 #' @importFrom dplyr mutate select
 #' @importFrom modelbased zero_crossings
 #' 
@@ -28,7 +30,7 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
   
   if(!is.null(names_fixedC)){
     fixed_prop_add <- lapply(names_fixedC, FUN = function(k){
-      ssd_hp(x[[k]], conc = fixed_conc[[k]])$est/100
+      hp_fun(x[[k]], conc = fixed_conc[[k]])$est#/100
     })
     names(fixed_prop_add) <- names_fixedC 
     
@@ -41,17 +43,18 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
   }
 
   cols <- c(names_all, "additive_proportions")
+
   hc_vals_out <- lapply(proportion, FUN = function(p){ 
     pred_vals <-   lapply(names_all, FUN = function(y){
       y_fit <- x[[y]]
 
       if(is.null(names_fixed)){
-        predict(y_fit, proportion = seq(0, p*1.1, length = resolution))           
+        predict_fun(y_fit, proportion = seq(0.0001, p*1.1, length = resolution))           
       } else {
         if(is.null(fixed_prop[[y]])){
-          predict(y_fit, proportion = seq(0, p*1.1, length = resolution)) 
+          predict_fun(y_fit, proportion = seq(0.0001, p*1.1, length = resolution)) 
         } else {
-          predict(y_fit, proportion = fixed_prop[[y]])          
+          predict_fun(y_fit, proportion = fixed_prop[[y]])          
         }
       }
     }) 
@@ -65,7 +68,7 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
     tt <- hc_dat |> 
           mutate(diff_vals=(additive_proportions-p)/p) |>
           mutate(proportion=as.factor(p))|> arrange_all(.vars = cols) 
-   
+
     hc_vals_out <- lapply(names_free, FUN = function(l){
         tt_l <- tt
         if(is.null(dim(tt[, setdiff(names_all, l)]))) {
@@ -76,10 +79,11 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
 
         tt_list <- tt_l |> 
           group_split(fact_x)
+
         tt_list_out <- lapply(tt_list, FUN = function(k){
-          z <-which((c(diff(sign(k$diff_vals)), 0) != 0))
-          if(length(z)>0){
-            
+          z <-which(c(diff(sign(k$diff_vals)), 0) != 0)
+         
+          if(length(z)==1){ #change from >0
               dat.z <- k[c(z, z+1),]
               zc.z <- zero_crossings(dat.z$diff_vals)/2
               weights.z <- c(zc.z, zc.z+1)
@@ -91,7 +95,7 @@ additive_hc <- function(x, proportion = c(0.01, 0.05, 0.1, 0.2),
                  k[which.min(k$diff_vals), cols]                 
                }
                  k[0, cols]                    
-             }            
+             }          
         }) |> 
           na.omit() |> 
           bind_rows()|> 

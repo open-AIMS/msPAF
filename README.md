@@ -9,10 +9,15 @@
 
 SSDs are cumulative probability distributions which are fitted to
 toxicity concentrations for different species as described by Posthuma
-et al. (2001). The current versions of msPAF takes SSDs fitted via the
-`ssdtools` package, which uses Maximum Likelihood to fit distributions
-such as the gamma, log-logistic, log-normal and Weibull to censored
-and/or weighted data.
+et al. (2001).
+
+The current versions of msPAF takes SSDs fitted via the `ssdtools`
+package, which uses Maximum Likelihood to fit distributions such as the
+gamma, log-logistic, log-normal and Weibull to censored and/or weighted
+data. In addition, msPAF takes concentration response curves fitted by
+the package `bayesnec`, which uses Hamiltonian Monte Carlo to fit a
+range of non-linear models to concentration response data using Bayesian
+methods.
 
 Joint toxicity of 2 or more contaminants and/or stressors are obtained
 following the methods described in Negri, et al. 2019 (Environmental
@@ -115,12 +120,12 @@ library(msPAF)
 plot_dat <- additive_predict(fits)
 head(plot_dat)
 #>       boron    cadmium additive_proportions
-#> 1 0.2672579 0.04833443               0.0199
-#> 2 0.5284784 0.04833443               0.0297
-#> 3 0.7780124 0.04833443               0.0395
-#> 4 1.0167996 0.04833443               0.0493
-#> 5 1.2474880 0.04833443               0.0591
-#> 6 1.4728905 0.04833443               0.0689
+#> 1 0.2672578 0.04869861               0.0199
+#> 2 0.5310847 0.04869861               0.0298
+#> 3 0.7829869 0.04869861               0.0397
+#> 4 1.0239697 0.04869861               0.0496
+#> 5 1.2567784 0.04869861               0.0595
+#> 6 1.4843001 0.04869861               0.0694
 ```
 
 For two contaminants, these can be visualized as a surface.
@@ -142,20 +147,20 @@ a curve.
 ``` r
 hc_vals_out <- additive_hc(fits)
 hc_vals_out
-#> # A tibble: 172 × 3
-#>       boron cadmium proportion
-#>       <dbl>   <dbl> <fct>     
-#>  1 8.11e-14  0.0492 0.01      
-#>  2 5.44e- 2  0.0427 0.01      
-#>  3 1.11e- 1  0.0356 0.01      
-#>  4 1.69e- 1  0.0273 0.01      
-#>  5 2.26e- 1  0.0158 0.01      
-#>  6 8.11e-14  0.148  0.05      
-#>  7 5.44e- 2  0.143  0.05      
-#>  8 1.11e- 1  0.138  0.05      
-#>  9 1.69e- 1  0.133  0.05      
-#> 10 2.26e- 1  0.128  0.05      
-#> # ℹ 162 more rows
+#> # A tibble: 720 × 4
+#>    boron  cadmium additive_proportions proportion
+#>    <dbl>    <dbl>                <dbl> <fct>     
+#>  1 0.267 0.000637               0.0101 0.01      
+#>  2 0.264 0.00185                0.0101 0.01      
+#>  3 0.261 0.00320                0.0101 0.01      
+#>  4 0.258 0.00454                0.0101 0.01      
+#>  5 0.255 0.00583                0.0101 0.01      
+#>  6 0.252 0.00705                0.0101 0.01      
+#>  7 0.249 0.00820                0.0101 0.01      
+#>  8 0.246 0.00928                0.0101 0.01      
+#>  9 0.243 0.0103                 0.0101 0.01      
+#> 10 0.240 0.0113                 0.0101 0.01      
+#> # ℹ 710 more rows
 ```
 
 For only two contaminants, these co-dependence curves can easily be
@@ -164,30 +169,25 @@ visualized.
 ``` r
 hc_vals_out |> 
   ggplot(aes(x=boron, y=cadmium, colour = proportion)) +
-  geom_line() +
+  geom_smooth(se=FALSE) +
   theme_bw()
+#> `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
 ```
 
-The model-averaged additive hazard proportion values can be obtained via
-`additive_hp` by providing the list of fitted SSDs and a named list of
-concentrations for each contaminant.
+![](man/figures/README-unnamed-chunk-9-1.png)<!-- --> The model-averaged
+additive hazard proportion values can be obtained via `additive_hp` by
+providing the list of fitted SSDs and a named list of concentrations for
+each contaminant.
 
 ``` r
 hp_vals_out <- additive_hp(fits, 
-                           conc = list(boron = c(1, 5, 10), 
+                           fixed_conc = list(boron = c(1, 5, 10), 
                                        cadmium = c(0.1, 0.2)))
 hp_vals_out
 ```
 
-## Licensing
+## Further Information
 
-Copyright 2018-2024 Province of British Columbia  
-Copyright 2021 Environment and Climate Change Canada  
-Copyright 2023-2024 Australian Government Department of Climate Change,
-Energy, the Environment and Water
-
-The documentation is released under the [CC BY 4.0
-License](https://creativecommons.org/licenses/by/4.0/)
-
-The code is released under the [Apache License
-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+`bayesnec` is provided by the [Australian Institute of Marine
+Science](https://www.aims.gov.au/) under the GPL-2 License
+([GPL-2](https://opensource.org/license/gpl-2-0)).

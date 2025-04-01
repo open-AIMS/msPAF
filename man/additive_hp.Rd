@@ -2,18 +2,31 @@
 % Please edit documentation in R/additive_hp.R
 \name{additive_hp}
 \alias{additive_hp}
-\title{Calculates the additive proportion of the community effected}
+\title{Calculates the additive proportion effected given concentrations of two or
+more intoxicants.}
 \usage{
-additive_hp(x, fixed_conc, ci = FALSE, ...)
+additive_hp(x, fixed_conc, expand = TRUE, ci = FALSE, ...)
 }
 \arguments{
 \item{x}{A named list of ssd's of class "fitdists" as fitted by
-\code{\link{ssd_fit_dists}} via package \code{\link{ssdtools}}.}
+\code{\link{ssd_fit_dists}} via package \code{\link{ssdtools}}. Alternatively,
+a named list of concentration-response fits of class "bnecfit" as fitted by
+\code{\link{bnec}} via package \code{\link{bayesnec}}.}
 
 \item{fixed_conc}{List of concentrations series to use for additive HC
-estimation}
+estimation.}
+
+\item{expand}{Should fixed concentrations be expanded to include all
+combinations of values supplied, or should these be used as specific
+combinations only.}
 }
 \description{
-This function calculate the additive proportion of the community effect
-across two or more input ssds, as input via a named list.
+Calculates the additive proportion effected given concentrations of two or
+more intoxicants.
+}
+\details{
+This function calculates the additive proportion of the community effected, or
+additive individual species endpoint response effect
+across two or more input ssds, or input concentration response models,
+as input via a named list.
 }
