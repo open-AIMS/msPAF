@@ -3,25 +3,39 @@
 
 # msPAF with ssdtools <img src="man/figures/logo.png" align="right" />
 
-`msPAF` is an R package to obtained additive toxicity estimates based on
-2 or more Species Sensitivity Distributions (SSD) obtained via
-`ssdtools`.
+`msPAF` is an R package for predicting additive toxicity effects on
+species or communities under multiple stressors. Joint toxicity from two
+or more contaminants and/or stressors is estimated using the Independent
+Action (Response Addition) model, which calculates the sum of
+probabilistic risks when the stressors do not interact and have
+different modes of action (de Zwart and Posthuma 2005 Environmental
+Toxicology and Chemistry 24(10), 2665-2676).
 
-SSDs are cumulative probability distributions which are fitted to
-toxicity concentrations for different species as described by Posthuma
-et al. (2001).
+While `ms` originally referred to `multi-substance`, we adopt the
+broader interpretation of `multi-stressor` as outlined Negri, et
+al. 2020 (Environmental Science and Technology, 54(2), pp.1102-1110),
+reflecting the packages applicability to both chemical and non-chemical
+stressors . The term `PAF` refers to the
+`Potentially Affected Fraction`, derived from models predicting joint
+toxicity based on 2 or more Species Sensitivity Distributions (SSD).
+SSDs are cumulative probability distributions fitted to toxicity data
+across multiple species, as described by Posthuma et al. (2001). Thus
+`msPAF` estimates the proportion of a community (represented by the SSD)
+potentially affected by the combined stressors.
 
-The current versions of msPAF takes SSDs fitted via the `ssdtools`
-package, which uses Maximum Likelihood to fit distributions such as the
-gamma, log-logistic, log-normal and Weibull to censored and/or weighted
-data. In addition, msPAF takes concentration response curves fitted by
-the package `bayesnec`, which uses Hamiltonian Monte Carlo to fit a
-range of non-linear models to concentration response data using Bayesian
-methods.
+The current versions of msPAF accepts SSDs generated fitted via the
+`ssdtools` package, which uses Maximum Likelihood to fit distributions
+such as the gamma, log-logistic, log-normal and Weibull to censored
+and/or weighted data, and returns a model averaged SSD.
 
-Joint toxicity of 2 or more contaminants and/or stressors are obtained
-following the methods described in Negri, et al. 2019 (Environmental
-Science and Technology, 54(2), pp.1102-1110).
+We have extended the `msPAF` methodology estimate the Potentially
+Affected Fraction for individual species, calculated as the percentage
+effect relative to the control under the assumption of additive
+toxicity. Here, `Fraction` refers to the proportional or percentage
+effect, analogous to the `x` in an `ECx` estimate. The package currently
+supports concentration response curves fitted by the package `bayesnec`,
+which uses Hamiltonian Monte Carlo to fit a range of non-linear models
+to concentration response data using Bayesian methods.
 
 ## Installation
 
